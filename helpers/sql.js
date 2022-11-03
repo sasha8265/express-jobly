@@ -1,6 +1,7 @@
 const { BadRequestError } = require("../expressError");
 
-// THIS NEEDS SOME GREAT DOCUMENTATION.
+// Generates SQL syntax for json data from the req to update an existing row in the database
+// {firstName: 'Aliya', age: 32} => {setCols: "first_name=$1, age=$2", values: ['Aliya', 32] }
 
 function sqlForPartialUpdate(dataToUpdate, jsToSql) {
   const keys = Object.keys(dataToUpdate);

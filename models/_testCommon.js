@@ -30,10 +30,11 @@ async function commonBeforeAll() {
       ]);
 }
 
+// Start the transaction before each test
 async function commonBeforeEach() {
   await db.query("BEGIN");
 }
-
+// Undo any changes to the database
 async function commonAfterEach() {
   await db.query("ROLLBACK");
 }
