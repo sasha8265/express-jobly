@@ -115,6 +115,7 @@ class User {
     return result.rows;
   }
 
+
   /** Given a username, return data about user.
    *
    * Returns { username, first_name, last_name, is_admin, jobs }
