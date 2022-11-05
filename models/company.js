@@ -61,7 +61,7 @@ class Company {
     // }
 
 
-    
+
     /** Find all companies.
      * Filter by optional params: min-employees, max-employees, name (case-insensitive and partial matches)
      * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
@@ -96,7 +96,7 @@ class Company {
         }
 
         if (name !== undefined) {
-            queryVals.push(name);
+            queryVals.push(`%${name}%`);
             whereExpressions.push(`name ILIKE $${queryVals.length}`)
         }
 
