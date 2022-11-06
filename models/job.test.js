@@ -38,29 +38,22 @@ describe("create", function () {
                 equity: "0.1",
                 company_handle: "c1"
             });
-
-        // const result = await db.query(
-        //     `SELECT id, title, salary, equity, company_handle
-        //    FROM jobs
-        //    WHERE title = 'new'`);
-        // expect(result.rows).toEqual([
-        //     {
-        //         id: expect.any(Number),
-        //         title: "new",
-        //         salary: 100,
-        //         equity: "0.1",
-        //         company_handle: "c1"
-        //     },
-        // ]);
     });
 
-    // test("bad request with dupe", async function () {
-    //     try {
-    //         await Company.create(newCompany);
-    //         await Company.create(newCompany);
-    //         fail();
-    //     } catch (err) {
-    //         expect(err instanceof BadRequestError).toBeTruthy();
-    //     }
-    // });
+    test("bad request with duplicate job", async function () {
+        const dupJob = {
+            title: "new",
+            salary: 100,
+            equity: 0.1,
+            company_handle: "c1"
+        };
+
+        try {
+            let job1 = await Job.create(newJob);
+            let job2 = await Job.create(dupJob);
+            fail();
+        } catch (err) {
+            expect(err instanceof BadRequestError).toBeTruthy();
+        }
+    });
 });
