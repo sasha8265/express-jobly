@@ -38,3 +38,5 @@ class Job {
         return job;
     }
 }
+
+module.exports = Job;
