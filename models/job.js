@@ -38,6 +38,12 @@ class Job {
         return job;
     }
 
+
+    /** Find all jobs.
+     * Filter by optional params: min-salary, has equity, title (case-insensitive and partial matches)
+     * Returns [{ id, title, salary, equity, company_handle }, ...]
+     * */
+
     static async findAll(filters = {}) {
         let whereExpressions = [];
         let queryVals = [];
