@@ -2,7 +2,6 @@
 
 const db = require("../db.js");
 const { BadRequestError, NotFoundError } = require("../expressError");
-const Company = require("./company.js");
 const Job = require("./job.js")
 const {
     commonBeforeAll,
@@ -55,5 +54,87 @@ describe("create", function () {
         } catch (err) {
             expect(err instanceof BadRequestError).toBeTruthy();
         }
+    });
+});
+
+describe("findAll", function () {
+    test("works: no filter", async function () {
+        let jobs = await Job.findAll();
+        expect(jobs).toEqual([
+            {
+                id: expect.any(Number),
+                title: "t1",
+                salary: 100,
+                equity: "0.1",
+                company_handle: "c1",
+            },
+            {
+                id: expect.any(Number),
+                title: "t2",
+                salary: 300,
+                equity: "0.1",
+                company_handle: "c2",
+            }
+        ]);
+    });
+    test("works: filters by min salary", async function () {
+        let jobs = await Job.findAll({ minSalary: 200 });
+        expect(jobs).toEqual([
+            {
+                id: expect.any(Number),
+                title: "t2",
+                salary: 300,
+                equity: "0.1",
+                company_handle: "c2",
+            }
+        ]);
+    });
+    test("works: filters by equity - true", async function () {
+        const newJob = await Job.create({
+            title: "nope",
+            salary: 100,
+            company_handle: "c1"
+        }) 
+        let jobs = await Job.findAll({ hasEquity:true });
+        expect(jobs).toEqual([
+            {
+                id: expect.any(Number),
+                title: "t1",
+                salary: 100,
+                equity: "0.1",
+                company_handle: "c1",
+            },
+            {
+                id: expect.any(Number),
+                title: "t2",
+                salary: 300,
+                equity: "0.1",
+                company_handle: "c2",
+            }
+        ]);
+    });
+    test("works: filters by partial title, case insensitive", async function () {
+        let jobs = await Job.findAll({ name: "t" });
+        expect(jobs).toEqual([
+            {
+                id: expect.any(Number),
+                title: "t1",
+                salary: 100,
+                equity: "0.1",
+                company_handle: "c1",
+            },
+            {
+                id: expect.any(Number),
+                title: "t2",
+                salary: 300,
+                equity: "0.1",
+                company_handle: "c2",
+            }
+        ]);
+    });
+
+    test("works: returns empty array if no results found", async function () {
+        let jobs = await Job.findAll({ title: "not a title" });
+        expect(jobs).toEqual([]);
     });
 });

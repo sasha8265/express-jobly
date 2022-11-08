@@ -20,7 +20,7 @@ async function commonBeforeAll() {
     await db.query(`
     INSERT INTO jobs(title, salary, equity, company_handle)
     VALUES ('t1', 100, 0.1, 'c1'),
-           ('t2', 100, 0.1, 'c2')`);
+           ('t2', 300, 0.1, 'c2')`);
     
 
     await db.query(`

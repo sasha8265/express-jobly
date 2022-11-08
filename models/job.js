@@ -43,11 +43,12 @@ class Job {
         let queryVals = [];
         const { title, minSalary, hasEquity } = filters;
 
-        let query = `SELECT title,
+        let query = `SELECT id,
+            title,
             salary,
             equity,
             company_handle
-            FROM companies`
+            FROM jobs`
 
 
         //Check for each possible param and add values to queryVals and value position to whereExpressions 
@@ -56,20 +57,22 @@ class Job {
             whereExpressions.push(`salary >= $${queryVals.length}`)
         }
 
-        if (hasEquity !== undefined) {
-            queryVals.push(hasEquity);
-            whereExpressions.push(`equity >= $${queryVals.length}`)
+        if (hasEquity === true) {
+            whereExpressions.push(`equity > 0`);
         } 
 
         if (title !== undefined) {
             queryVals.push(`%${title}%`);
-            whereExpressions.push(`name ILIKE $${queryVals.length}`)
+            whereExpressions.push(`title ILIKE $${queryVals.length}`)
         }
 
         //join whereExpressions and add new WHERE expression string to query
         if (whereExpressions.length > 0) {
             query += " WHERE " + whereExpressions.join(" AND ");
         }
+
+        // finish assembling query
+        query += " ORDER BY title"
 
         const jobsRes = await db.query(query, queryVals);
         return jobsRes.rows;
