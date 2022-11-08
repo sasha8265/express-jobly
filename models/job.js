@@ -37,6 +37,43 @@ class Job {
 
         return job;
     }
+
+    static async findAll(filters = {}) {
+        let whereExpressions = [];
+        let queryVals = [];
+        const { title, minSalary, hasEquity } = filters;
+
+        let query = `SELECT title,
+            salary,
+            equity,
+            company_handle
+            FROM companies`
+
+
+        //Check for each possible param and add values to queryVals and value position to whereExpressions 
+        if (minSalary !== undefined) {
+            queryVals.push(minSalary);
+            whereExpressions.push(`salary >= $${queryVals.length}`)
+        }
+
+        if (hasEquity !== undefined) {
+            queryVals.push(hasEquity);
+            whereExpressions.push(`equity >= $${queryVals.length}`)
+        } 
+
+        if (title !== undefined) {
+            queryVals.push(`%${title}%`);
+            whereExpressions.push(`name ILIKE $${queryVals.length}`)
+        }
+
+        //join whereExpressions and add new WHERE expression string to query
+        if (whereExpressions.length > 0) {
+            query += " WHERE " + whereExpressions.join(" AND ");
+        }
+
+        const jobsRes = await db.query(query, queryVals);
+        return jobsRes.rows;
+    }
 }
 
 module.exports = Job;
