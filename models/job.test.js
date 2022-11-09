@@ -8,6 +8,7 @@ const {
     commonBeforeEach,
     commonAfterEach,
     commonAfterAll,
+    testJobIds
 } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
@@ -56,6 +57,8 @@ describe("create", function () {
         }
     });
 });
+
+/************************************** findAll */
 
 describe("findAll", function () {
     test("works: no filter", async function () {
@@ -136,5 +139,38 @@ describe("findAll", function () {
     test("works: returns empty array if no results found", async function () {
         let jobs = await Job.findAll({ title: "not a title" });
         expect(jobs).toEqual([]);
+    });
+});
+
+/************************************** get by id */
+
+describe("get", function () {
+    test("works", async function () {
+
+        console.log(testJobIds)
+
+        let job = await Job.get(testJobIds[0]);
+        expect(job).toEqual({
+            id: testJobIds[0].id,
+            title: "t1",
+            salary: 100,
+            equity: "0.1",
+            company: {
+                handle: "c1",
+                name: "C1",
+                description: "Desc1",
+                numEmployees: 1,
+                logoUrl: 'http://c1.img'
+            },
+        });
+    });
+
+    test("not found if no such job", async function () {
+        try {
+            await Job.get(0);
+            fail();
+        } catch (err) {
+            expect(err instanceof NotFoundError).toBeTruthy();
+        }
     });
 });

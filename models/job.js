@@ -83,6 +83,42 @@ class Job {
         const jobsRes = await db.query(query, queryVals);
         return jobsRes.rows;
     }
+
+    /** Given a job id, return data about job.
+     *
+     * Returns { title, salary, equity, company_handle }
+     *
+     * Throws NotFoundError if not found.
+     **/
+
+    static async get(id) {
+        const jobRes = await db.query(
+            `SELECT id,
+            title,
+            salary,
+            equity,
+            company_handle
+            FROM jobs
+           WHERE id = $1`,
+            [id]);
+        
+        const job = jobRes.rows[0];
+
+        if (!job) throw new NotFoundError(`No job found: ${id}`);
+
+        const companyRes = await db.query(
+            `SELECT handle,
+            name,
+            description,
+            num_employees as "numEmployees"
+            logo_url AS "logoUrl"
+            FROM companies
+            WHERE handle = $1`, [job.company_handle]);
+        
+        delete job.company_handle;
+        job.company = companyRes.rows[0];
+        return job;
+    }
 }
 
 module.exports = Job;
