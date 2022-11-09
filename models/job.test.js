@@ -173,3 +173,43 @@ describe("get", function () {
         }
     });
 });
+
+/************************************** update */
+
+describe("update", function () {
+    const updateData = {
+        title: "New",
+        salary: 150,
+        equity: 0.2,
+    };
+
+    test("works", async function () {
+        let job = await Job.update(testJobIds[0], updateData);
+        expect(job).toEqual({
+            id: testJobIds[0],
+            title: "New",
+            salary: 150,
+            equity: '0.2',
+            company_handle: 'c1'
+        });
+    });
+
+
+    test("not found if no such job", async function () {
+        try {
+            await Job.get(0);
+            fail();
+        } catch (err) {
+            expect(err instanceof NotFoundError).toBeTruthy();
+        }
+    });
+
+    test("bad request with no data", async function () {
+        try {
+            await Job.update(testJobIds[0], {});
+            fail();
+        } catch (err) {
+            expect(err instanceof BadRequestError).toBeTruthy();
+        }
+    });
+});
