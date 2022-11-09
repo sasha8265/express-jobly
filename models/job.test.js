@@ -147,11 +147,10 @@ describe("findAll", function () {
 describe("get", function () {
     test("works", async function () {
 
-        console.log(testJobIds)
 
         let job = await Job.get(testJobIds[0]);
         expect(job).toEqual({
-            id: testJobIds[0].id,
+            id: testJobIds[0],
             title: "t1",
             salary: 100,
             equity: "0.1",

@@ -110,7 +110,7 @@ class Job {
             `SELECT handle,
             name,
             description,
-            num_employees as "numEmployees"
+            num_employees as "numEmployees",
             logo_url AS "logoUrl"
             FROM companies
             WHERE handle = $1`, [job.company_handle]);
