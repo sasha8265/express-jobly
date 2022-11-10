@@ -1,8 +1,8 @@
 {
     "$schema": "https://json-schema.org/draft/2019-09/schema",
-    "$id": "http://example.com/example.json",
+    "$id": "http://our.company.com/jobUpdateSchema.schema.json",
     "type": "object",
-    "title": "Root Schema",
+    "title": "jobUpdateSchema",
     
     "properties": {
         "title": {
@@ -15,15 +15,8 @@
             "minimum": 0
         },
         "equity": {
-            "type": "string",
-            "pattern": "0|(0?\\.[0-9]+)"
+            "type": "string"
         }
     },
-    "examples": [
-        {
-            "title": "jtitle",
-            "salary": 100,
-            "equity": 0.1
-        }
-    ]
+    "additionalProperties": false
 }
