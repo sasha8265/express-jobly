@@ -98,7 +98,7 @@ describe("GET /jobs", function () {
                     },
                     {
                         id: expect.any(Number),
-                        companyHandle: "c3",
+                        companyHandle: "c2",
                         title: "t3",
                         salary: 300,
                         equity: "0.5"
@@ -120,7 +120,7 @@ describe("GET /jobs", function () {
                 },
                 {
                     id: expect.any(Number),
-                    companyHandle: "c3",
+                    companyHandle: "c2",
                     title: "t3",
                     salary: 300,
                     equity: "0.5"
