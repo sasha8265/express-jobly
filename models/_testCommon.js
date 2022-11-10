@@ -27,7 +27,6 @@ async function commonBeforeAll() {
            RETURNING id`);
     
     testJobIds.splice(0, 0, ...jobResults.rows.map(r => r.id))
-    console.log(testJobIds)
     
 
     await db.query(`
