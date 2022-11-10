@@ -36,7 +36,7 @@ describe("create", function () {
                 title: "new",
                 salary: 100,
                 equity: "0.1",
-                company_handle: "c1"
+                companyHandle: "c1"
             });
     });
 
@@ -69,14 +69,14 @@ describe("findAll", function () {
                 title: "t1",
                 salary: 100,
                 equity: "0.1",
-                company_handle: "c1",
+                companyHandle: "c1",
             },
             {
                 id: expect.any(Number),
                 title: "t2",
                 salary: 300,
                 equity: "0.1",
-                company_handle: "c2",
+                companyHandle: "c2",
             }
         ]);
     });
@@ -88,7 +88,7 @@ describe("findAll", function () {
                 title: "t2",
                 salary: 300,
                 equity: "0.1",
-                company_handle: "c2",
+                companyHandle: "c2",
             }
         ]);
     });
@@ -105,14 +105,14 @@ describe("findAll", function () {
                 title: "t1",
                 salary: 100,
                 equity: "0.1",
-                company_handle: "c1",
+                companyHandle: "c1",
             },
             {
                 id: expect.any(Number),
                 title: "t2",
                 salary: 300,
                 equity: "0.1",
-                company_handle: "c2",
+                companyHandle: "c2",
             }
         ]);
     });
@@ -124,14 +124,14 @@ describe("findAll", function () {
                 title: "t1",
                 salary: 100,
                 equity: "0.1",
-                company_handle: "c1",
+                companyHandle: "c1",
             },
             {
                 id: expect.any(Number),
                 title: "t2",
                 salary: 300,
                 equity: "0.1",
-                company_handle: "c2",
+                companyHandle: "c2",
             }
         ]);
     });

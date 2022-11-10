@@ -18,7 +18,7 @@ class Job {
 
     static async create({ title, salary, equity, company_handle }) {
         const duplicateCheck = await db.query(
-            `SELECT title, company_handle
+            `SELECT title, company_handle 
            FROM jobs
            WHERE title = $1 AND company_handle = $2`,
             [title, company_handle]);
@@ -30,7 +30,7 @@ class Job {
             `INSERT INTO jobs
            (title, salary, equity, company_handle)
            VALUES ($1, $2, $3, $4)
-           RETURNING id, title, salary, equity, company_handle`,
+           RETURNING id, title, salary, equity, company_handle AS "companyHandle"`,
             [title, salary, equity, company_handle],
         );
         const job = result.rows[0];
@@ -53,7 +53,7 @@ class Job {
             title,
             salary,
             equity,
-            company_handle
+            company_handle AS "companyHandle"
             FROM jobs`
 
 
@@ -97,7 +97,7 @@ class Job {
             title,
             salary,
             equity,
-            company_handle
+            company_handle AS "companyHandle"
             FROM jobs
            WHERE id = $1`,
             [id]);
@@ -113,9 +113,9 @@ class Job {
             num_employees as "numEmployees",
             logo_url AS "logoUrl"
             FROM companies
-            WHERE handle = $1`, [job.company_handle]);
+            WHERE handle = $1`, [job.companyHandle]);
         
-        delete job.company_handle;
+        delete job.companyHandle;
         job.company = companyRes.rows[0];
         return job;
     }
@@ -127,8 +127,7 @@ class Job {
      *
      * Data can include: {title, salary, equity}
      *
-     * Returns {id, title, salary, equity, company: {
-     * handle, name, description, num_employees, logo_url}}
+     * Returns {id, title, salary, equity, comapny_handle}
      *
      * Throws NotFoundError if not found.
      */
