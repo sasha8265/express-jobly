@@ -197,21 +197,30 @@ class User {
      * - username: username applying for job
      * - jobId: job id
      */
-    
+
     static async applyForJob(username, jobId) {
         const checkJob = await db.query(
-            `SELECT id FORM jobs WHERE id = $1`, [jobId]);
+            `SELECT id 
+            FROM jobs
+            WHERE id = $1`, [jobId]);
         
         const job = checkJob.rows[0];
+
         if (!job) throw new NotFoundError(`No job found: ${jobId}`);
 
         const checkUser = await db.query(
-            `SELECT username FROM users WHERE username = $2`[username]);
+            `SELECT username 
+            FROM users
+            WHERE username = $1`, [username]);
+        
         const user = checkUser.rows[0];
+
         if (!user) throw new NotFoundError(`No user found: ${username}`)
 
         await db.query(
-            `INSERT INTO applications (job_id, username) VALUES ($1, $2)`, [jobId, username]);
+            `INSERT INTO applications (job_id, username) 
+            VALUES ($1, $2)`,
+            [jobId, username]);
     }
 
 
