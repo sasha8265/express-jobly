@@ -8,7 +8,6 @@ const express = require("express");
 const { ensureLoggedIn, ensureAdmin, ensureAdminOrUser } = require("../middleware/auth");
 const { BadRequestError } = require("../expressError");
 const User = require("../models/user");
-const Job = require("../models/job");
 const { createToken } = require("../helpers/tokens");
 const userNewSchema = require("../schemas/userNew.json");
 const userUpdateSchema = require("../schemas/userUpdate.json");
@@ -81,24 +80,22 @@ router.get("/:username", ensureAdminOrUser, async function (req, res, next) {
 
 /** POST /[username]/jobs/[id] => { user: user, jobs:{} }
  *
- * Returns { username, firstName, lastName, isAdmin, jobs: {id} }
+ * Returns { applied: job id}
  *
- * Authorization required: login
+ * Authorization required: admin or same as user
  **/
 
-router.post("/users/:username/jobs/:id", ensureAdminOrUser, async function (req, res, next) {
+router.post("/:username/jobs/:id", ensureAdminOrUser, async function (req, res, next) {
     try {
-        const user = await User.get(req.params.username);
-        if (!user.jobs) {
-            user.jobs = [req.params.id]
-        } else user.jobs.push(req.params.id)
+        const jobId = +req.params.id;
+        await User.applyForJob(req.params.username, jobId)
 
-        return res.json({ user });
+        return res.json({ applied: jobId });
 
     } catch (err) {
         return next(err);
     }
-})
+});
 
 
 /** PATCH /[username] { user } => { user }
